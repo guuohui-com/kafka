@@ -39,7 +39,10 @@ public class KafkaProducerDemo {
          * 设置集群地址
          * */
         properties.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,brokerList);
-
+        /**
+         * 加一个拦截器 (可以为自定义，也可以使用Kafka定义好的)
+         * */
+        properties.put(ProducerConfig.INTERCEPTOR_CLASSES_CONFIG,ProduceInceptor.class.getName());
         /**
          * 消息发送者实例化
          * */
@@ -71,7 +74,7 @@ public class KafkaProducerDemo {
              * */
             producer.send(record, new Callback() {
                 /**
-                 * 异步发送的毁掉接口
+                 * 异步发送的回调接口
                  * */
                 @Override
                 public void onCompletion(RecordMetadata recordMetadata, Exception e) {
